@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+motor
+passlib[bcrypt]
+python-dotenv
+pydantic[email]
+python-jose[cryptography]
+
+# installed packages
+# pip install 'uvicorn[standard]'
+# pip install python-dotenv
+# pip install PyJWT
+# pip install fastapi uvicorn pymongo
+

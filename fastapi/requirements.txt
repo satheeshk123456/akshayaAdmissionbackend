@@ -5,10 +5,12 @@ passlib[bcrypt]
 python-dotenv
 pydantic[email]
 python-jose[cryptography]
+fastapi
+pymongo
 
 # installed packages
 # pip install 'uvicorn[standard]'
 # pip install python-dotenv
 # pip install PyJWT
-# pip install fastapi uvicorn pymongo python-dotc:\Users\sk764\Downloads\src\src\App.js c:\Users\sk764\Downloads\src\src\App.test.js c:\Users\sk764\Downloads\src\src\index.css c:\Users\sk764\Downloads\src\src\index.js c:\Users\sk764\Downloads\src\src\logo.svg c:\Users\sk764\Downloads\src\src\reportWebVitals.js c:\Users\sk764\Downloads\src\src\setupTests.js c:\Users\sk764\Downloads\src\src\pages c:\Users\sk764\Downloads\src\src\App.cssenv pydantic
+# pip install fastapi uvicorn pymongo
 

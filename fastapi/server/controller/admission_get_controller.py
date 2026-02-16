@@ -1,6 +1,7 @@
 from ..database import db
 from bson import ObjectId
 
+
 def serialize_admission(admission) -> dict:
    return {
     "id": str(admission.get("_id")),
@@ -22,10 +23,12 @@ def serialize_admission(admission) -> dict:
 
 
 async def get_all_admissions():
-    admission_collection=db["admission_details"]
-    cursor = admission_collection.find()
+    admission_collection = db["admission_details"]
 
-    # ✅ Convert Motor cursor to list
-    admissions = await cursor.to_list(length=None)
+    # 🔥 Sort by latest first (better UX)
+    cursor = admission_collection.find().sort("submittedAt", -1)
+
+    # 🔥 Limit results (important for speed)
+    admissions = await cursor.to_list(length=1000)
 
     return [serialize_admission(adm) for adm in admissions]

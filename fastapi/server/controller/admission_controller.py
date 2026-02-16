@@ -3,15 +3,17 @@ from ..model.admission_model import AdmissionModel
 from server.utils.email_utils import send_email
 from server.utils.id_generator import get_next_sequence
 from datetime import datetime
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks
 
-async def admissionstore(data: AdmissionModel):
+
+async def admissionstore(data: AdmissionModel, background_tasks: BackgroundTasks):
 
     collection = db["admission_details"]
     admission_data = data.model_dump()
 
     email = admission_data.get("email")
     mobile = admission_data.get("mobile")
+
     existing_user = await collection.find_one({
         "$or": [
             {"email": email},
@@ -70,11 +72,14 @@ Admissions Office
 Akshaya College of Engineering
 """
 
-        send_email(
+        # 🔥 Only change: send email in background (non-blocking)
+        background_tasks.add_task(
+            send_email,
             to_email=email,
             subject="Admission Submitted Successfully",
             body=email_body
         )
+
     return {
         "status": "success",
         "application_id": unique_id

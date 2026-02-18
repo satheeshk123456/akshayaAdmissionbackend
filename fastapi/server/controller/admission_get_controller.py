@@ -4,9 +4,9 @@ from bson import ObjectId
 
 def serialize_admission(admission) -> dict:
    return {
-    "id": str(admission.get("_id")),
-    "category": admission.get("category"),
+    "userid":admission.get("application_id"),
     "fullname": admission.get("fullname"),
+    "How do you know": admission.get("howToKnow"),
     "email": admission.get("email"),
     "dob": admission.get("dob"),
     "mobile": admission.get("mobile"),
@@ -16,9 +16,13 @@ def serialize_admission(admission) -> dict:
     "schoolSearch": admission.get("schoolSearch"),
     "institution": admission.get("institution"),
     "college": admission.get("college"),
+    "collegeShortcut": admission.get("collegeShortcut"),
     "selectedCourse": admission.get("selectedCourse"),
     "status": admission.get("status"),
     "submittedAt": admission.get("submittedAt"),
+
+    
+    
 }
 
 

@@ -7,14 +7,11 @@ pydantic[email]
 python-jose[cryptography]
 fastapi
 pymongo
-brevo-python
 
 # installed packages
 # pip install 'uvicorn[standard]'
 # pip install python-dotenv
 # pip install PyJWT
 # pip install fastapi uvicorn pymongo motor
-# pip install brevo-python
+
 # pip install 'pydantic[email]'
-
-

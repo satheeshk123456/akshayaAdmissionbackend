@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class AdmissionModel(BaseModel):
-    category: str
+    howToKnow:str
     fullname: str
     email: EmailStr
     dob: str
@@ -13,6 +13,7 @@ class AdmissionModel(BaseModel):
     schoolSearch: str
     institution: str
     college: str
+    collegeShortcut:str
     selectedCourse: str
     status: str
     submittedAt: str

@@ -5,15 +5,14 @@ from server.utils.id_generator import get_next_sequence
 from datetime import datetime
 from fastapi import HTTPException, BackgroundTasks
 
-
 async def admissionstore(data: AdmissionModel, background_tasks: BackgroundTasks):
-
     collection = db["admission_details"]
     admission_data = data.model_dump()
 
     email = admission_data.get("email")
     mobile = admission_data.get("mobile")
 
+    # 1. Check for duplicate user
     existing_user = await collection.find_one({
         "$or": [
             {"email": email},
@@ -27,8 +26,8 @@ async def admissionstore(data: AdmissionModel, background_tasks: BackgroundTasks
             detail="User with this email or mobile number already exists"
         )
 
+    # 2. Generate Unique Application ID
     sequence_number = await get_next_sequence("admission_id")
-
     year = datetime.utcnow().year
     unique_id = f"{year}akshaya{sequence_number}"
 
@@ -36,12 +35,13 @@ async def admissionstore(data: AdmissionModel, background_tasks: BackgroundTasks
     admission_data["status"] = "Admission Submitted"
     admission_data["submittedAt"] = datetime.utcnow()
 
-    result = await collection.insert_one(admission_data)
+    # 3. Save to MongoDB
+    await collection.insert_one(admission_data)
 
+    # 4. Trigger Email if email exists
     if email:
-
         email_body = f"""
-AKSHAYA COLLEGE OF ENGINEERING
+{admission_data.get("college")}
 -----------------------------------------
 
 Dear {admission_data.get("fullname")},
@@ -57,22 +57,16 @@ Email Address    : {admission_data.get("email")}
 Date of Birth    : {admission_data.get("dob")}
 State            : {admission_data.get("state")}
 City             : {admission_data.get("city")}
-School Type      : {admission_data.get("schoolType")}
 School Name      : {admission_data.get("schoolSearch")}
-Institution      : {admission_data.get("institution")}
 Course Applied   : {admission_data.get("selectedCourse")}
 -----------------------------------------
 
 Our admissions team will review your application and contact you shortly.
 
-Thank you for choosing Akshaya College of Engineering.
-
-Best Regards,
-Admissions Office
-Akshaya College of Engineering
+Thank you for choosing Akshaya College.
 """
 
-        # 🔥 Only change: send email in background (non-blocking)
+        # Non-blocking background task
         background_tasks.add_task(
             send_email,
             to_email=email,
